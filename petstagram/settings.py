@@ -150,3 +150,5 @@ MEDIA_ROOT = BASE_DIR / 'media_files'
 
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
 LOGIN_URL = reverse_lazy('log in user')
+
+LOGIN_REDIRECT_URL = reverse_lazy('landing page')

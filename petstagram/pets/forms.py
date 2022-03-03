@@ -11,24 +11,13 @@ from petstagram.pets.models import Pet
 class PetCreateForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Pet
-        exclude = ('user', )
+        exclude = ('user',)
 
 
 class EditPetForm(PetCreateForm):
-    def save(self, commit=True):
-        db_pet = Pet.objects.get(pk=self.instance.id)
-        if commit:
-            # head = str(settings.MEDIA_ROOT).replace('\\', '/') + '/'
-            head = settings.MEDIA_ROOT
-            tail = str(db_pet.image)
-            image_path = path.join(head, tail)
-            os.remove(image_path)
-
-        return super().save(commit)
-
     class Meta:
         model = Pet
-        fields = '__all__'
+        exclude = ('user',)
 
         widgets = {
             'type': forms.TextInput(
@@ -38,4 +27,12 @@ class EditPetForm(PetCreateForm):
             )
         }
 
+    def save(self, commit=True):
+        db_pet = Pet.objects.get(pk=self.instance.id)
+        if commit:
+            head = settings.MEDIA_ROOT
+            tail = str(db_pet.image)
+            image_path = path.join(head, tail)
+            os.remove(image_path)
 
+        return super().save(commit)
